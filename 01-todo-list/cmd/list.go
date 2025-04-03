@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AndrewMeleka/goprojects-practice/file"
+	"github.com/AndrewMeleka/todo-cli/file"
 	"github.com/mergestat/timediff"
 	"github.com/spf13/cobra"
 )
@@ -27,7 +27,7 @@ var listCmd = &cobra.Command{
 
 func listTasks() error {
 	// Open the file
-	f, err := os.Open(file.FileName)
+	f, err := os.Open(file.TaskFileName)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return err

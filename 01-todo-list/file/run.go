@@ -5,16 +5,18 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"syscall"
 )
 
-const FileName = "tasks.csv"
+const TrackIDFileName = "last_id.txt"
+const TaskFileName = "tasks.csv"
 
 func CreateFile() {
-	if _, err := os.Stat(FileName); !os.IsNotExist(err) {
+	if _, err := os.Stat(TaskFileName); !os.IsNotExist(err) {
 		return
 	}
 	// File does not exist, create it
-	file, err := os.Create(FileName)
+	file, err := os.Create(TaskFileName)
 	if err != nil {
 		fmt.Println("Error creating file:", err)
 		return
@@ -38,7 +40,7 @@ func CreateFile() {
 
 func CountLines() (int, error) {
 	// Open the CSV file
-	file, err := os.Open(FileName)
+	file, err := os.Open(TaskFileName)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return 0, err
@@ -84,6 +86,33 @@ func WriteLines(f *os.File, lines []string) error {
 		if _, err := f.WriteString(line + "\n"); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+func LoadFile(filepath string, flag int, perm os.FileMode) (*os.File, error) {
+	f, err := os.OpenFile(filepath, flag, perm)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file for reading")
+	}
+
+	// Exclusive lock obtained on the file descriptor
+	if err := syscall.Flock(int(f.Fd()), syscall.LOCK_EX); err != nil {
+		_ = f.Close()
+		return nil, err
+	}
+
+	return f, nil
+}
+
+func CloseFile(f *os.File) error {
+	syscall.Flock(int(f.Fd()), syscall.LOCK_UN)
+	return f.Close()
+}
+
+func DeleteFile(fileName string) error {
+	if err := os.Remove(fileName); err != nil {
+		return fmt.Errorf("failed to delete file: %w", err)
 	}
 	return nil
 }

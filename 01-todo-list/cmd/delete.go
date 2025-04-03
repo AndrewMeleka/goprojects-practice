@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/AndrewMeleka/goprojects-practice/file"
+	"github.com/AndrewMeleka/todo-cli/file"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ var deleteCmd = &cobra.Command{
 
 func deleteTask(taskId int) error {
 	// Open the file
-	f, err := os.OpenFile(file.FileName, os.O_RDWR, 0644)
+	f, err := os.OpenFile(file.TaskFileName, os.O_RDWR, 0644)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return err

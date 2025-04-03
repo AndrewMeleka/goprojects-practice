@@ -20,7 +20,8 @@ func Execute() {
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(addCmd)
 	rootCmd.AddCommand(deleteCmd)
-	rootCmd.AddCommand(deleteAllCmd)
+	rootCmd.AddCommand(resetCmd)
+	initCompleteCmd()
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

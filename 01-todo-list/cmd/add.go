@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/AndrewMeleka/goprojects-practice/file"
+	"github.com/AndrewMeleka/todo-cli/file"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ type Task struct {
 }
 
 func createTask(name string) (err error) {
-	f, err := os.OpenFile(file.FileName, os.O_APPEND|os.O_WRONLY, 0644)
+	f, err := file.LoadFile(file.TaskFileName, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return err

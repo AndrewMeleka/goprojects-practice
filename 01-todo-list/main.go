@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/AndrewMeleka/goprojects-practice/cmd"
-	"github.com/AndrewMeleka/goprojects-practice/file"
+	"github.com/AndrewMeleka/todo-cli/cmd"
+	"github.com/AndrewMeleka/todo-cli/file"
 )
 
 func main() {
